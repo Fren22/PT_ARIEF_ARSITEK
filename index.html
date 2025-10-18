@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PT ARIEF ARSITEK</title>
+
+  <!-- Font & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;scroll-behavior:smooth;}
+    body{background:#111;color:#fff;overflow-x:hidden;}
+
+    /* ===== HEADER ===== */
+    header{
+      position:fixed;top:0;left:0;width:100%;
+      padding:20px 80px;z-index:999;
+      display:flex;justify-content:space-between;align-items:center;
+      background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);
+      transition:background .4s ease;
+    }
+    header.scrolled{background:rgba(0,0,0,0.9);}
+    .logo{display:flex;align-items:center;gap:10px;}
+    .logo img{width:55px;height:auto;}
+    .logo span{font-weight:700;color:#fff;font-size:1.05rem;letter-spacing:1px;}
+    nav{position:relative;}
+    nav ul{list-style:none;display:flex;align-items:center;gap:20px;}
+    nav ul li{position:relative;}
+    nav a{
+      color:#fff;text-decoration:none;font-weight:500;
+      padding:6px 0;display:inline-block;transition:.3s;
+    }
+    nav a:hover,nav a.active{color:#d6a827;}
+    nav a::after{
+      content:"";position:absolute;left:0;bottom:-5px;width:0;height:2px;background:#d6a827;transition:.3s;
+    }
+    nav a:hover::after,nav a.active::after{width:100%;}
+
+    /* ===== DROPDOWN ===== */
+    .dropdown-btn{cursor:pointer;}
+    .dropdown-menu{
+      position:absolute;top:35px;left:0;
+      background:#000;border-radius:6px;overflow:hidden;
+      display:none;flex-direction:column;
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+      z-index:1000;
+    }
+    .dropdown-menu a{
+      color:#fff;text-decoration:none;padding:10px 25px;
+      text-align:left;font-weight:500;transition:.3s;
+      white-space:nowrap;
+    }
+    .dropdown-menu a:hover{background:#d6a827;color:#fff;}
+    .dropdown.show .dropdown-menu{display:flex;}
+
+    /* ===== HERO ===== */
+    .hero{
+      position:relative;display:flex;align-items:center;
+      height:100vh;background:#111;
+      overflow:hidden;padding:0 0 0 120px;
+    }
+    .hero-shape{
+      position:absolute;right:0;top:0;height:100%;width:78%;
+      background:#fff;border-top-left-radius:100px;border-bottom-right-radius:100px;
+      overflow:hidden;clip-path:polygon(10% 0,100% 0,100% 100%,0 100%);
+    }
+     /* Tambahan efek blur lembut pada gambar slide */
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    filter: brightness(0.9) blur(2px); /* <<< efek blur lembut dan sedikit redup */
+  }
+
+  .hero-slide.active {
+    opacity: 1;
+  }
+    .hero-content{
+      position:relative;z-index:5;max-width:480px;
+      animation:fadeUp 1.5s ease forwards;
+    }
+    .hero-content h1{font-size:2.8rem;font-weight:700;margin-bottom:15px;color:#fff;}
+    .hero-content p{color:#ddd;font-size:1rem;line-height:1.7;margin-bottom:25px;}
+    .hero-content a{
+      display:inline-block;background:#d6a827;color:#fff;
+      padding:12px 28px;border-radius:5px;text-decoration:none;font-weight:600;
+      transition:.3s;
+    }
+    .hero-content a:hover{background:#b88b1b;}
+
+    /* ===== SOCIAL ICONS LEFT ===== */
+    .socials{
+      position:absolute;left:40px;top:50%;transform:translateY(-50%);
+      display:flex;flex-direction:column;gap:15px;z-index:5;
+    }
+    .socials a{
+      display:flex;align-items:center;justify-content:center;
+      width:40px;height:40px;background:#fff;color:#111;
+      border-radius:6px;transition:.3s;
+    }
+    .socials a:hover{background:#d6a827;color:#fff;}
+
+    /* ===== INDICATOR RIGHT ===== */
+    .indicators{
+      position:absolute;right:40px;bottom:60px;
+      display:flex;flex-direction:column;gap:10px;z-index:5;
+    }
+    .indicator{
+      width:14px;height:14px;border-radius:3px;background:#d6a827;opacity:.4;transition:.3s;
+    }
+    .indicator.active{opacity:1;}
+
+    @keyframes fadeUp{0%{opacity:0;transform:translateY(40px);}100%{opacity:1;transform:translateY(0);}}
+
+    /* ===== ABOUT SECTION ===== */
+    section{padding:100px 80px;transition:opacity .8s ease,transform .8s ease;}
+    section h2{
+      text-align:center;font-size:2.2rem;margin-bottom:50px;font-weight:700;color:#fff;position:relative;
+    }
+    section h2::after{
+      content:"";position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);
+      width:70px;height:3px;background:#d6a827;
+    }
+    #about{background:#1b1b1b;}
+    #about div{max-width:900px;margin:0 auto;text-align:center;line-height:1.8;}
+    #about p{margin-bottom:20px;font-size:1.05rem;color:#ccc;}
+
+    @media(max-width:991px){
+      header{padding:15px 30px;flex-direction:column;}
+      nav ul{flex-wrap:wrap;justify-content:center;}
+      .hero{flex-direction:column;padding:0 30px;}
+      .hero-shape{position:absolute;inset:0;width:100%;clip-path:none;border-radius:0;}
+      .hero-content{max-width:100%;text-align:center;margin-top:120px;}
+      .socials{display:none;}
+      .indicators{right:50%;transform:translateX(50%);}
+      section{padding:80px 30px;}
+    }
+    
+  </style>
+</head>
+
+<body>
+  <!-- ===== HEADER ===== -->
+  <header id="navbar">
+    <div class="logo">
+      <img src="img/Logo.png" alt="PT ARIEF ARSITEK Logo">
+      <span>PT ARIEF ARSITEK</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#business">Business</a></li>
+        <li><a href="#services">Services</a></li>
+
+        <!-- DROPDOWN -->
+        <li class="dropdown">
+          <span class="dropdown-btn">Projects <i class="fa-solid fa-caret-down"></i></span>
+          <div class="dropdown-menu">
+            <a href="#projects">Galeri</a>
+            <a href="#Videos">Video</a>
+          </div>
+        </li>
+
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-shape">
+      <img src="img/foto15.jpeg" alt="Slide 1" class="hero-slide active">
+      <img src="img/foto26.jpg" alt="Slide 2" class="hero-slide">
+      <img src="img/foto27.jpg" alt="Slide 3" class="hero-slide">
+    </div>
+    <div class="hero-content">
+      <h1>Welcome To <span style="color:#cca230; text-shadow:0 0 6px rgba(0, 0, 0, 0.8);">PT. ARIEF ARSITEK</span></h1>
+      <p>PT ARIEF ARSITEK menghadirkan rancangan modern yang estetis dan fungsional untuk setiap kebutuhan ruang Anda.</p>
+      <a href="#projects">Gallery</a>
+    </div>
+    <div class="socials">
+      <a href="https://www.facebook.com/share/1BG9rqZD43/"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/pt.arief.arsitek?igsh=dGhsaXNtYmJjNjk3"><i class="fab fa-instagram"></i></a>
+      <a href="https://wa.me/6282337781234"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://youtube.com/@ariefarsitek?si=HdWDpIA93sRJkGrI"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.tiktok.com/@pt.arief.arsitek?_t=ZS-90S4jRglsLU&_r=1"><i class="fab fa-tiktok"></i></a>
+    </div>
+    <div class="indicators">
+      <div class="indicator active"></div>
+      <div class="indicator"></div>
+      <div class="indicator"></div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <h2>About Us</h2>
+    <div>
+      <p><strong>PT ARIEF ARSITEK</strong> perusahaan yang bergerak di bidang arsitektur, desain, dan konstruksi 
+        yang berbasis di Kota Malang. Sejak berdiri, perusahaan ini berkomitmen untuk menghadirkan solusi 
+        inovatif dalam perencanaan dan pembangunan berbagai jenis proyek, mulai dari perumahan, gedung 
+        perkantoran, hingga fasilitas komersial. Dengan tenaga profesional yang berpengalaman, PT ARIEF 
+        ARSITEK selalu mengutamakan kualitas, ketepatan waktu, dan kepuasan klien dalam setiap pekerjaan. 
+        Kami percaya bahwa desain yang baik bukan hanya tentang estetika, tetapi juga tentang fungsi, 
+        kenyamanan, serta keberlanjutan lingkungan. Dengan pengalaman yang luas, tim profesional kami 
+        terdiri dari arsitek, insinyur, dan tenaga ahli di bidang konstruksi yang selalu mengedepankan 
+        inovasi dan keberlanjutan. PT ARIEF ARSITEK Malang telah dipercaya menangani berbagai proyek 
+        mulai dari hunian pribadi, gedung komersial, perkantoran, hingga proyek skala besar.</p>
+      <p>Kami percaya bahwa setiap proyek adalah karya seni sekaligus tanggung jawab moral. Karena itu, kami berusaha menciptakan bangunan 
+        yang tidak hanya kokoh dan fungsional, tetapi juga memiliki nilai estetika tinggi dan ramah lingkungan. 
+        Dedikasi kami tercermin dalam kepuasan klien yang selalu menjadi prioritas utama.</p>
+    </div>
+  </section>
+
+  <script>
+    // HERO SLIDER
+    let current=0;
+    const slides=document.querySelectorAll('.hero-slide');
+    const indicators=document.querySelectorAll('.indicator');
+    setInterval(()=>{
+      slides[current].classList.remove('active');
+      indicators[current].classList.remove('active');
+      current=(current+1)%slides.length;
+      slides[current].classList.add('active');
+      indicators[current].classList.add('active');
+    },5000);
+
+    // DROPDOWN MENU CLICK
+    const dropdown=document.querySelector('.dropdown');
+    const dropdownBtn=document.querySelector('.dropdown-btn');
+    dropdownBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+    document.addEventListener('click',()=>{
+      dropdown.classList.remove('show');
+    });
+  </script>
+  <!-- ===== OUR BUSINESS GROUP ===== -->
+  <section id="business" style="background:#fff;color:#111;text-align:center;">
+    <h2 style="color:#111;">Our Business Group</h2>
+    <div class="business-container" style="display:flex;flex-wrap:wrap;justify-content:center;gap:30px;max-width:1000px;margin:auto;">
+      <div class="business-box">
+        <i class="fa-solid fa-building"></i>
+        <h3>Malang Kontraktor</h3>
+        <p>Konsultan & kontraktor profesional untuk proyek konstruksi terpercaya.</p>
+        <a href="https://malangkontraktor.com/" target="_blank">Visit Site</a>
+      </div>
+      <div class="business-box">
+        <i class="fa-solid fa-drafting-compass"></i>
+        <h3>Arief Arsitek</h3>
+        <p>Perusahaan arsitektur dengan pendekatan inovatif dan berorientasi hasil.</p>
+        <a href="https://arief-arsitek.com/" target="_blank">Visit Site</a>
+      </div>
+      <div class="business-box">
+        <i class="fa-solid fa-city"></i>
+        <h3>Companies House</h3>
+        <p>Unit usaha properti dan manajemen proyek dengan standar internasional.</p>
+        <a href="https://companieshouse.id/indonesia-arief-utama" target="_blank">Visit Site</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .business-box{
+      background:#f8f8f8;border:1px solid rgba(0,0,0,0.1);
+      padding:35px 25px;border-radius:15px;width:270px;
+      transition:all .3s ease;box-shadow:0 5px 15px rgba(0,0,0,0.05);
+    }
+    .business-box:hover{
+      transform:translateY(-8px) scale(1.04);
+      border-color:#d6a827;box-shadow:0 10px 25px rgba(214,168,39,0.2);
+    }
+    .business-box i{font-size:45px;color:#d6a827;margin-bottom:15px;}
+    .business-box h3{font-size:1.1rem;margin-bottom:10px;font-weight:600;}
+    .business-box p{font-size:.95rem;color:#555;margin-bottom:15px;}
+    .business-box a{
+      display:inline-block;background:#d6a827;color:#fff;
+      padding:10px 20px;border-radius:6px;text-decoration:none;
+      font-weight:600;transition:.3s;
+    }
+    .business-box a:hover{background:#b88b1b;transform:scale(1.07);}
+  </style>
+
+  <!-- ===== SERVICES SECTION ===== -->
+  <section id="services" style="background:#000000;color:#111;">
+    <h2>Our Services</h2>
+    <div class="service-boxes" style="display:flex; flex-wrap:wrap; justify-content:center; gap:25px;">
+      <div class="service-card">
+        <i class="fa-solid fa-pencil-ruler"></i>
+        <h3>Architecture & Design</h3>
+        <p>Perencanaan dan desain arsitektur yang inovatif, fungsional, dan estetis. Kami merancang bangunan yang merefleksikan karakter unik setiap klien.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-building"></i>
+        <h3>Construction</h3>
+        <p>Pembangunan profesional dari awal hingga akhir dengan kualitas tinggi, tepat waktu, dan menjamin keamanan struktur bangunan.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-couch"></i>
+        <h3>Interior Design</h3>
+        <p>Desain interior elegan dan fungsional yang menciptakan kenyamanan dan keindahan dalam setiap ruang.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-tree-city"></i>
+        <h3>Landscape Design</h3>
+        <p>Menata ruang luar yang harmonis dengan bangunan utama untuk menciptakan suasana alami dan menenangkan.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-helmet-safety"></i>
+        <h3>Project Management</h3>
+        <p>Manajemen proyek yang profesional dan efisien memastikan semua pekerjaan selesai sesuai jadwal dan anggaran.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-drafting-compass"></i>
+        <h3>Structural Design</h3>
+        <p>Perencanaan struktur bangunan yang kuat, aman, dan sesuai dengan standar teknik modern.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-comments-dollar"></i>
+        <h3>Landscape Design</h3>
+        <p>Konsultasi profesional dari perencanaan hingga eksekusi proyek, membantu memilih solusi desain dan biaya paling efisien.</p>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-hammer"></i>
+        <h3>Landscape Design</h3>
+        <p>Transformasi bangunan lama menjadi tampilan baru yang modern tanpa kehilangan karakter aslinya.</p>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .service-card{
+      background:#fff;width:260px;text-align:center;
+      padding:30px 25px;border-radius:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+      transition:all .3s ease;
+    }
+    .service-card i{
+      font-size:40px;color:#d6a827;margin-bottom:15px;
+      transition:transform .3s,color .3s;
+    }
+    .service-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    }
+    .service-card:hover i{color:#b88b1b;transform:scale(1.1);}
+  </style>
+
+  <!-- ===== PROJECTS SECTION ===== -->
+  <section id="projects" style="background:#fff;color:#111;">
+    <h2 style="color:#111;">Gallery Proyek</h2>
+    <div class="project-grid">
+      <img src="img/foto1.jpeg" alt="Project 1">
+      <img src="img/foto2.JPG" alt="Project 2">
+      <img src="img/foto5.jpg" alt="Project 3">
+      <img src="img/foto6.jpeg" alt="Project 4">
+      <img src="img/foto9.jpeg" alt="Project 5">
+      <img src="img/foto10.jpeg" alt="Project 6">
+      <img src="img/foto15.jpeg" alt="Project 7">
+      <img src="img/foto12.jpeg" alt="Project 8">
+      <img src="img/foto13.jpeg" alt="Project 9">
+    </div>
+  </section>
+
+  <section id="Videos"section></section>
+  <section id="tiktok-videos" style="padding:80px 20px; text-align:center;">
+  <h2 style="margin-bottom:40px;">Videos Proyek</h2>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:1000px;margin:auto;">
+
+    <!-- Videos TikTok 1 -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@pt.arief.arsitek/video/7547535193880530196"
+      data-video-id="7547535193880530196"
+      style="max-width: 100%;min-width: 250px;">
+      <section>
+        <a target="_blank" title="@pt.arief.arsitek" href="https://www.tiktok.com/@pt.arief.arsitek?refer=embed">@pt.arief.arsitek</a>
+        📍 Survey SLF – Tentrem Karoseri Tim PT Arief Arsitek melakukan survey lapangan sebagai bagian dari proses Sertifikat Laik Fungsi (SLF).
+      </section>
+    </blockquote>
+
+    <!-- Video TikTok 2 -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@pt.arief.arsitek/video/7547537067719265554"
+      data-video-id="7547537067719265554"
+      style="max-width: 100%;min-width: 250px;">
+      <section>
+        <a target="_blank" title="@pt.arief.arsitek" href="https://www.tiktok.com/@pt.arief.arsitek?refer=embed">@pt.arief.arsitek</a>
+        Contoh video lain dari proyek arsitektur kami.
+      </section>
+    </blockquote>
+
+    <!-- Video TikTok 3 -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@pt.arief.arsitek/video/7561299105562168597"
+      data-video-id="7561299105562168597"
+      style="max-width: 100%;min-width: 250px;">
+      <section>
+        <a target="_blank" title="@pt.arief.arsitek" href="https://www.tiktok.com/@pt.arief.arsitek?refer=embed">@pt.arief.arsitek</a>
+        Dokumentasi video proyek lainnya oleh tim kami.
+      </section>
+    </blockquote>
+
+  </div>
+</section>
+
+<script async src="https://www.tiktok.com/embed.js"></script>
+
+
+  <style>
+    .project-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:20px;max-width:1100px;margin:auto;
+    }
+    .project-grid img{
+      width:100%;height:220px;object-fit:cover;border-radius:10px;
+      background:#eee;box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      transition:transform .4s ease;
+    }
+    .project-grid img:hover{transform:scale(1.04);}
+  </style>
+
+  <!-- ===== CONTACT SECTION ===== -->
+<section id="contact" style="position:relative;padding:100px 20px;
+  background:url('https://plus.unsplash.com/premium_photo-1661376741563-56e907c3ec0c?w=1000&auto=format&fit=crop&q=60') center/cover no-repeat;">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);z-index:1;"></div>
+
+  <div style="position:relative;z-index:2;">
+    <h2 style="color:#ffffff; text-shadow:0 0 20px rgb(0, 0, 0);"></span>>Contact Us</h2>
+
+    <form style="max-width:600px;margin:40px auto 0;background:#222;padding:30px;border-radius:10px;">
+      <div style="text-align:center;max-width:800px;margin:auto;">
+        <p><i class="fa-solid fa-location-dot" style="color:#d6a827;"></i> Jl. Monginsidi No.6, Rampal Celaket, Kec. Klojen, Kota Malang, Jawa Timur 65111 </p>
+        <p><i class="fa-solid fa-phone" style="color:#d6a827;"></i> +62 899 9600 111 / +62 233 778 1234</p>
+        <p><i class="fa-solid fa-envelope" style="color:#d6a827;"></i> <i>pt.arief.arsitek@gmail.com</i></p>
+      </div>
+    </form>
+
+    <form style="max-width:600px;margin:40px auto 0;background:#222;padding:30px;border-radius:10px;">
+      <input type="text" placeholder="Nama" required style="width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:5px;">
+      <input type="email" placeholder="Email" required style="width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:5px;">
+      <textarea rows="5" placeholder="Pesan Anda..." required style="width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:5px;"></textarea>
+      <button type="submit" style="width:100%;padding:12px;background:#d6a827;color:#fff;font-weight:600;border:none;border-radius:5px;cursor:pointer;">Kirim Pesan</button>
+    </form>
+
+    <div style="max-width:700px;margin:40px auto;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+      <iframe src="https://www.google.com/maps?q=-7.964746,112.633676&hl=id&z=18&output=embed"
+        width="100%" height="350" style="border:0;" allowfullscreen loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="background:#000;color:#ccc;text-align:center;padding:25px 15px;font-size:0.95rem;">
+    © 2025 PT ARIEF ARSITEK – All Rights Reserved
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // NAVBAR SCROLL EFFECT
+    window.addEventListener('scroll',()=>{
+      const nav=document.getElementById('navbar');
+      if(window.scrollY>50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    // ACTIVE NAV ON SCROLL
+    const sections=document.querySelectorAll('section');
+    const navLinks=document.querySelectorAll('nav a');
+    window.addEventListener('scroll',()=>{
+      let current="";
+      sections.forEach(sec=>{
+        const top=sec.offsetTop-150;
+        if(scrollY>=top) current=sec.getAttribute('id');
+      });
+      navLinks.forEach(link=>{
+        link.classList.remove('active');
+        if(link.getAttribute('href')==="#"+current) link.classList.add('active');
+      });
+    });
+
+    // SCROLL ANIMATION
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.style.opacity=1;
+          entry.target.style.transform="translateY(0)";
+        }
+      });
+    },{threshold:0.2});
+    document.querySelectorAll("section").forEach(sec=>{
+      sec.style.opacity=0;
+      sec.style.transform="translateY(40px)";
+      observer.observe(sec);
+    });
+  </script>
+</body>
+</html>
