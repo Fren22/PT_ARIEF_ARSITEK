@@ -9,19 +9,137 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- === CUSTOM CURSOR SEKOP (POSISI KIRI ATAS — FINAL FIX) === -->
+<style>
+  /* Sembunyikan kursor asli */
+  * {
+    cursor: none !important;
+  }
+
+  /* Ikon sekop mengikuti mouse */
+  .sekop-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 28px;  /* ukuran kecil biar pas */
+    height: 28px;
+    transform: rotate(135deg); /* posisi miring ke kiri atas ↖️ */
+    pointer-events: none;
+    z-index: 9999;
+    user-select: none;
+    transition: transform 0.08s ease-out;
+  }
+
+  /* Saat hover tombol atau link */
+  a:hover ~ .sekop-cursor,
+  button:hover ~ .sekop-cursor,
+  input:hover ~ .sekop-cursor {
+    transform: rotate(135deg) scale(1.2);
+  }
+</style>
+
+<!-- Gambar sekop -->
+<img src="img/ikon.png" alt="Sekop Cursor" class="sekop-cursor">
+
+<script>
+  const sekop = document.querySelector('.sekop-cursor');
+  document.addEventListener('mousemove', (e) => {
+    sekop.style.transform = `translate(${e.clientX - 14}px, ${e.clientY - 14}px) rotate(135deg)`;
+  });
+</script>
+
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;scroll-behavior:smooth;}
     body{background:#111;color:#fff;overflow-x:hidden;}
+    
+   /* ===== NAVBAR FIX RESPONSIVE ===== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6); /* transparan hitam */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 45px; /* default untuk layar besar */
+  transition: all 0.3s ease;
+}
 
-    /* ===== HEADER ===== */
-    header{
-      position:fixed;top:0;left:0;width:100%;
-      padding:20px 80px;z-index:999;
-      display:flex;justify-content:space-between;align-items:center;
-      background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);
-      transition:background .4s ease;
-    }
-    header.scrolled{background:rgba(0,0,0,0.9);}
+/* Logo dan teks di tengah vertikal */
+header img {
+  height: 45px;
+  width: auto;
+}
+
+/* Efek animasi futuristik untuk background Contact Us */
+#contact {
+  position: relative;
+  background: linear-gradient(-45deg, #0a0a0a, #1a1a1a, #2b2b2b, #1a1a1a);
+  background-size: 400% 400%;
+  animation: gradientMove 25s ease-in-out infinite;
+  color: white;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Animasi gradasi dinamis */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Tambahan efek cahaya halus bergerak */
+#contact::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+  animation: lightMove 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+/* Animasi cahaya halus */
+@keyframes lightMove {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  50% { transform: rotate(180deg) translate(30px, 30px); }
+  100% { transform: rotate(360deg) translate(0, 0); }
+}
+
+/* Pastikan kontennya tetap di atas efek */
+#contact * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== RESPONSIVE UNTUK HP ===== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;     /* biar logonya dan menu ke bawah */
+    align-items: center;
+    padding: 10px 20px;          /* padding lebih kecil */
+    background: rgba(43, 43, 43, 0.8); /* tetap transparan tapi sedikit lebih ringan */
+  }
+
+  header nav a {
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  header img {
+    height: 40px;
+    margin-bottom: 6px; /* jarak kecil antara logo dan teks */
+  }
+}
+
     .logo{display:flex;align-items:center;gap:10px;}
     .logo img{width:55px;height:auto;}
     .logo span{font-weight:700;color:#fff;font-size:1.05rem;letter-spacing:1px;}
@@ -61,11 +179,44 @@
       height:100vh;background:#111;
       overflow:hidden;padding:0 0 0 120px;
     }
-    .hero-shape{
-      position:absolute;right:0;top:0;height:100%;width:78%;
-      background:#fff;border-top-left-radius:100px;border-bottom-right-radius:100px;
-      overflow:hidden;clip-path:polygon(10% 0,100% 0,100% 100%,0 100%);
-    }
+    .hero-shape::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(36, 36, 36, 0.4); /* nilai bisa disesuaikan: 0.4 = agak terang, 0.7 = sangat gelap */
+  z-index: 2;
+}
+.hero-shape {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 78%;
+  background: #fff;
+  border-top-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+  overflow: hidden;
+  clip-path: polygon(10% 0,100% 0,100% 100%,0 100%);
+  z-index: 1; /* tambahkan ini */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3; /* tambahkan ini agar teks tidak ikut gelap */
+}
+
+
+/* Responsif */
+@media (max-width: 900px) {
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .about-image img {
+    max-width: 350px;
+  }
+}
+
      /* Tambahan efek blur lembut pada gambar slide */
   .hero-slide {
     position: absolute;
@@ -75,7 +226,7 @@
     object-fit: cover;
     opacity: 0;
     transition: opacity 1.5s ease;
-    filter: brightness(0.9) blur(2px); /* <<< efek blur lembut dan sedikit redup */
+    filter: brightness(0.9) blur(1.6px); /* <<< efek blur lembut dan sedikit redup */
   }
 
   .hero-slide.active {
@@ -127,9 +278,15 @@
       content:"";position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);
       width:70px;height:3px;background:#d6a827;
     }
+    #about p {
+    margin-bottom: 20px;
+    font-size: 1.0rem;
+    color: #ccc;
+    text-align: justify; /* tambahkan ini agar teks rata kiri-kanan */
+    }
     #about{background:#1b1b1b;}
     #about div{max-width:900px;margin:0 auto;text-align:center;line-height:1.8;}
-    #about p{margin-bottom:20px;font-size:1.05rem;color:#ccc;}
+    #about p{margin-bottom:20px;font-size:1.05rem;color:#ccc;text-align:justify;}
 
     @media(max-width:991px){
       header{padding:15px 30px;flex-direction:column;}
@@ -141,11 +298,323 @@
       .indicators{right:50%;transform:translateX(50%);}
       section{padding:80px 30px;}
     }
-    
+
+    /* ==== LIGHTBOX FOTO ==== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+  animation: zoomIn .3s ease;
+}
+
+@keyframes zoomIn {
+  from {transform: scale(0.8); opacity: 0;}
+  to {transform: scale(1); opacity: 1;}
+}
+
+.lightbox.active { display: flex; }
+
+.lightbox span {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  transition: .3s;
+}
+.lightbox span:hover { color: #d6a827; transform: scale(1.1); }
+
+/* ===== INTRO LOGO ANIMATION ===== */
+#intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeOut 1s ease 3.5s forwards; /* mulai hilang setelah 3.5 detik */
+}
+
+#intro img {
+  width: 140px;
+  opacity: 0;
+  transform: translateX(100px) rotate(15deg); /* dari kanan */
+  animation: logoIn 2s ease forwards;
+}
+
+/* animasi masuk logo */
+@keyframes logoIn {
+  0% { opacity: 0; transform: translateX(100px) scale(0.8) rotate(15deg); }
+  60% { opacity: 1; transform: translateX(0) scale(1.05) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* animasi keluar seluruh layar intro */
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* ===== TEKS DI BAWAH LOGO ===== */
+.intro-content {
+  text-align: center;
+}
+
+#intro h2 {
+  color: #d47b1f; /* warna oranye dari logo */
+  margin-top: 18px;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  opacity: 0;
+  animation: textFade 2s ease 1s forwards, gradientMove 4s linear infinite; /* muncul sedikit setelah logo */
+}
+#intro h2 {
+  margin-top: 18px;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #ffffff, #d47b1f, #ffffff);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textFade 2s ease 1s forwards, gradientMove 4s linear infinite;
+}
+
+/* animasi teks muncul */
+@keyframes textFade {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== BLOK INFO STYLE DENGAN ANIMASI ===== */
+#info-blocks {
+  background: #2b2f3a;
+  color: #bbb;
+  padding: 80px 30px;
+}
+
+.info-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.info-column {
+  flex: 1 1 250px;
+  min-width: 250px;
+}
+
+.title-orange {
+  color: #d6a827;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.info-column h4 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.info-column h4::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #d6a827;
+  margin-top: 6px;
+}
+
+/* Paragraf */
+.info-column p {
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* Link animasi glow underline */
+.info-column a {
+  color: #bbb;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.info-column a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: #d6a827;
+  box-shadow: 0 0 10px #d6a827;
+  transition: width 0.4s ease, box-shadow 0.3s ease;
+}
+
+.info-column a:hover {
+  color: #fff;
+}
+
+.info-column a:hover::after {
+  width: 100%;
+  box-shadow: 0 0 12px #ffce45;
+}
+
+/* Social icons */
+.social-icons {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  background: #d6a827;
+  color: #000;
+  box-shadow: 0 0 10px #d6a827;
+}
+
+/* ===== PERBAIKAN OUR SERVICES UNTUK HP/TABLET ===== */
+@media (max-width: 900px) {
+  #services {
+    background: #111;
+    padding: 60px 20px;
+  }
+
+  #services .service-item {
+    flex-direction: column !important;
+    text-align: center;
+    background: #1a1a1a;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 40px;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  #services .service-item img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(214,168,39,0.25);
+  }
+
+  #services .service-text {
+    width: 100%;
+    padding: 15px 10px;
+  }
+
+  #services .service-text h3 {
+    font-size: 1.3rem;
+    color: #d6a827;
+  }
+
+  #services .service-text p {
+    font-size: 0.95rem;
+    color: #ddd;
+    text-align: justify;
+  }
+}
+
+/* Animasi fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive layout untuk blok info */
+@media (max-width: 900px) {
+  .info-container {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 40px;
+  }
+}
+
+</style>
+
+<style>
+.glow-link {
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.glow-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: #d6a827;
+  box-shadow: 0 0 8px #d6a827;
+  transition: width 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glow-link:hover {
+  color: #ffcf48;
+  text-shadow: 0 0 10px #d6a827, 0 0 20px #ffcf48;
+}
+
+.glow-link:hover::after {
+  width: 100%;
+  box-shadow: 0 0 15px #ffcf48;
+}
+</style>
+
   </style>
 </head>
 
 <body>
+<!-- ===== ANIMASI MASUK (LOGO LOADING) ===== -->
+<div id="intro">
+  <div class="intro-content">
+    <img src="img/Logo.png" alt="Logo PT Arief Arsitek">
+    <h2><strong>PT ARIEF ARSITEK MALANG</strong></h2>
+  </div>
+</div>
+
   <!-- ===== HEADER ===== -->
   <header id="navbar">
     <div class="logo">
@@ -163,7 +632,7 @@
         <li class="dropdown">
           <span class="dropdown-btn">Projects <i class="fa-solid fa-caret-down"></i></span>
           <div class="dropdown-menu">
-            <a href="#projects">Galeri</a>
+            <a href="#projects">Gallery</a>
             <a href="#Videos">Video</a>
           </div>
         </li>
@@ -176,14 +645,13 @@
   <!-- ===== HERO ===== -->
   <section class="hero" id="home">
     <div class="hero-shape">
-      <img src="img/foto15.jpeg" alt="Slide 1" class="hero-slide active">
-      <img src="img/foto26.jpg" alt="Slide 2" class="hero-slide">
-      <img src="img/foto27.jpg" alt="Slide 3" class="hero-slide">
+      <img src="img/foto17.JPG" alt="Slide 1" class="hero-slide active">
+      <img src="img/foto10.jpg" alt="Slide 2" class="hero-slide">
+      <img src="img/foto11.jpg" alt="Slide 3" class="hero-slide">
     </div>
     <div class="hero-content">
-      <h1>Welcome To <span style="color:#cca230; text-shadow:0 0 6px rgba(0, 0, 0, 0.8);">PT. ARIEF ARSITEK</span></h1>
-      <p>PT ARIEF ARSITEK menghadirkan rancangan modern yang estetis dan fungsional untuk setiap kebutuhan ruang Anda.</p>
-      <a href="#projects">Gallery</a>
+      <h1>Welcome to <span style="color:#d49e27; text-shadow:0 0 6px rgba(0, 0, 0, 0.8);">PT. ARIEF ARSITEK </span></h1>
+      <p><strong>PT ARIEF ARSITEK</strong> menghadirkan rancangan modern yang estetis dan fungsional untuk setiap kebutuhan ruang Anda.</p>
     </div>
     <div class="socials">
       <a href="https://www.facebook.com/share/1BG9rqZD43/"><i class="fab fa-facebook-f"></i></a>
@@ -200,24 +668,28 @@
   </section>
 
   <!-- ===== ABOUT ===== -->
-  <section id="about">
-    <h2>About Us</h2>
-    <div>
-      <p><strong>PT ARIEF ARSITEK</strong> perusahaan yang bergerak di bidang arsitektur, desain, dan konstruksi 
-        yang berbasis di Kota Malang. Sejak berdiri, perusahaan ini berkomitmen untuk menghadirkan solusi 
-        inovatif dalam perencanaan dan pembangunan berbagai jenis proyek, mulai dari perumahan, gedung 
-        perkantoran, hingga fasilitas komersial. Dengan tenaga profesional yang berpengalaman, PT ARIEF 
-        ARSITEK selalu mengutamakan kualitas, ketepatan waktu, dan kepuasan klien dalam setiap pekerjaan. 
-        Kami percaya bahwa desain yang baik bukan hanya tentang estetika, tetapi juga tentang fungsi, 
-        kenyamanan, serta keberlanjutan lingkungan. Dengan pengalaman yang luas, tim profesional kami 
-        terdiri dari arsitek, insinyur, dan tenaga ahli di bidang konstruksi yang selalu mengedepankan 
-        inovasi dan keberlanjutan. PT ARIEF ARSITEK Malang telah dipercaya menangani berbagai proyek 
-        mulai dari hunian pribadi, gedung komersial, perkantoran, hingga proyek skala besar.</p>
-      <p>Kami percaya bahwa setiap proyek adalah karya seni sekaligus tanggung jawab moral. Karena itu, kami berusaha menciptakan bangunan 
-        yang tidak hanya kokoh dan fungsional, tetapi juga memiliki nilai estetika tinggi dan ramah lingkungan. 
-        Dedikasi kami tercermin dalam kepuasan klien yang selalu menjadi prioritas utama.</p>
+<section id="about">
+  <h2>About Us</h2>
+  <div class="about-container">
+    <div class="about-text">
+      <p><strong>PT ARIEF ARSITEK</strong> adalah perusahaan yang bergerak di bidang arsitektur, desain, dan konstruksi 
+        yang berbasis di Kota Malang. Sejak berdiri, perusahaan ini berkomitmen menghadirkan solusi inovatif 
+        dalam perencanaan dan pembangunan berbagai jenis proyek — mulai dari perumahan, gedung perkantoran, 
+        hingga fasilitas komersial. Dengan tenaga profesional berpengalaman, PT ARIEF ARSITEK selalu mengutamakan 
+        kualitas, ketepatan waktu, dan kepuasan klien dalam setiap pekerjaan.</p>
+
+      <p>Kami percaya bahwa desain yang baik bukan hanya tentang estetika, tetapi juga fungsi, kenyamanan, 
+        serta keberlanjutan lingkungan. Dengan pengalaman yang luas, tim kami terdiri dari arsitek, insinyur, 
+        dan tenaga ahli di bidang konstruksi yang selalu mengedepankan inovasi dan keberlanjutan. 
+        PT ARIEF ARSITEK Malang telah dipercaya menangani berbagai proyek mulai dari hunian pribadi, 
+        gedung komersial, perkantoran, hingga proyek skala besar.</p>
+
+      <p>Kami meyakini bahwa setiap proyek adalah karya seni sekaligus tanggung jawab moral. 
+        Karena itu, kami berusaha menciptakan bangunan yang kokoh, fungsional, memiliki nilai estetika tinggi, 
+        dan ramah lingkungan. Dedikasi kami tercermin dari kepuasan klien yang selalu menjadi prioritas utama.</p>
     </div>
-  </section>
+</section>
+
 
   <script>
     // HERO SLIDER
@@ -243,9 +715,10 @@
       dropdown.classList.remove('show');
     });
   </script>
+  
   <!-- ===== OUR BUSINESS GROUP ===== -->
   <section id="business" style="background:#fff;color:#111;text-align:center;">
-    <h2 style="color:#111;">Our Business Group</h2>
+    <h2 style="color:#111;">Our other websites</h2>
     <div class="business-container" style="display:flex;flex-wrap:wrap;justify-content:center;gap:30px;max-width:1000px;margin:auto;">
       <div class="business-box">
         <i class="fa-solid fa-building"></i>
@@ -289,90 +762,167 @@
     .business-box a:hover{background:#b88b1b;transform:scale(1.07);}
   </style>
 
-  <!-- ===== SERVICES SECTION ===== -->
-  <section id="services" style="background:#000000;color:#111;">
-    <h2>Our Services</h2>
-    <div class="service-boxes" style="display:flex; flex-wrap:wrap; justify-content:center; gap:25px;">
-      <div class="service-card">
-        <i class="fa-solid fa-pencil-ruler"></i>
-        <h3>Architecture & Design</h3>
-        <p>Perencanaan dan desain arsitektur yang inovatif, fungsional, dan estetis. Kami merancang bangunan yang merefleksikan karakter unik setiap klien.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-building"></i>
-        <h3>Construction</h3>
-        <p>Pembangunan profesional dari awal hingga akhir dengan kualitas tinggi, tepat waktu, dan menjamin keamanan struktur bangunan.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-couch"></i>
-        <h3>Interior Design</h3>
-        <p>Desain interior elegan dan fungsional yang menciptakan kenyamanan dan keindahan dalam setiap ruang.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-tree-city"></i>
-        <h3>Landscape Design</h3>
-        <p>Menata ruang luar yang harmonis dengan bangunan utama untuk menciptakan suasana alami dan menenangkan.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-helmet-safety"></i>
-        <h3>Project Management</h3>
-        <p>Manajemen proyek yang profesional dan efisien memastikan semua pekerjaan selesai sesuai jadwal dan anggaran.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-drafting-compass"></i>
-        <h3>Structural Design</h3>
-        <p>Perencanaan struktur bangunan yang kuat, aman, dan sesuai dengan standar teknik modern.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-comments-dollar"></i>
-        <h3>Landscape Design</h3>
-        <p>Konsultasi profesional dari perencanaan hingga eksekusi proyek, membantu memilih solusi desain dan biaya paling efisien.</p>
-      </div>
-      <div class="service-card">
-        <i class="fa-solid fa-hammer"></i>
-        <h3>Landscape Design</h3>
-        <p>Transformasi bangunan lama menjadi tampilan baru yang modern tanpa kehilangan karakter aslinya.</p>
-      </div>
-    </div>
-  </section>
+  <!-- ===== SERVICES SECTION (UPDATED) ===== -->
+<section id="services" style="background:#000; color:#fff;">
+  <h2>Our Services</h2>
 
-  <style>
-    .service-card{
-      background:#fff;width:260px;text-align:center;
-      padding:30px 25px;border-radius:10px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.1);
-      transition:all .3s ease;
+  <div class="service-item">
+    <img src="img/foto16.jpg" alt="Architecture & Design">
+    <div class="service-text">
+      <h3><i class="fa-solid fa-pencil-ruler"></i> Architecture & Design</h3>
+      <p>Perencanaan dan desain arsitektur yang inovatif, fungsional, dan estetis. Kami merancang bangunan yang merefleksikan karakter unik setiap klien.</p>
+    </div>
+  </div>
+
+  <div class="service-item reverse">
+    <img src="img/foto13.jpg" alt="Construction">
+    <div class="service-text">
+      <h3><i class="fa-solid fa-building"></i> Construction</h3>
+      <p>Pembangunan profesional dari awal hingga akhir dengan kualitas tinggi, tepat waktu, dan menjamin keamanan struktur bangunan.</p>
+    </div>
+  </div>
+
+  <div class="service-item">
+    <img src="img/foto14.jpg" alt="Interior Design">
+    <div class="service-text">
+      <h3><i class="fa-solid fa-couch"></i> Interior Design</h3>
+      <p>Desain interior elegan dan fungsional yang menciptakan kenyamanan dan keindahan dalam setiap ruang.</p>
+    </div>
+  </div>
+
+  <div class="service-item reverse">
+    <img src="img/foto12.JPG" alt="Landscape Design">
+    <div class="service-text">
+      <h3><i class="fa-solid fa-tree-city"></i> Landscape Design</h3>
+      <p>Menata ruang luar yang harmonis dengan bangunan utama untuk menciptakan suasana alami dan menenangkan.</p>
+    </div>
+  </div>
+
+  <div class="service-item">
+    <img src="img/foto15.jpeg" alt="Project Management">
+    <div class="service-text">
+      <h3><i class="fa-solid fa-helmet-safety"></i> Project Management</h3>
+      <p>Manajemen proyek yang profesional dan efisien memastikan semua pekerjaan selesai sesuai jadwal dan anggaran.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  #services {
+    padding: 100px 60px;
+  }
+
+  .service-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 80px;
+    flex-wrap: wrap;
+  }
+
+  .service-item.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .service-item img {
+    width: 45%;
+    max-width: 480px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(214,168,39,0.3);
+    object-fit: cover;
+    height: 300px;
+  }
+
+  .service-text {
+    width: 45%;
+    max-width: 480px;
+  }
+
+  .service-text h3 {
+    font-size: 1.6rem;
+    color: #d6a827;
+    margin-bottom: 15px;
+  }
+
+  .service-text h3 i {
+    margin-right: 10px;
+    color: #d6a827;
+  }
+
+  .service-text p {
+    color: #ddd;
+    line-height: 1.7;
+    font-size: 1.05rem;
+    text-align: justify;
+  }
+
+  /* Responsif */
+  @media (max-width: 900px) {
+    .service-item,
+    .service-item.reverse {
+      flex-direction: column;
+      text-align: center;
     }
-    .service-card i{
-      font-size:40px;color:#d6a827;margin-bottom:15px;
-      transition:transform .3s,color .3s;
+    .service-item img,
+    .service-text {
+      width: 100%;
     }
-    .service-card:hover{
-      transform:translateY(-8px);
-      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    .service-text {
+      padding: 10px 20px;
     }
-    .service-card:hover i{color:#b88b1b;transform:scale(1.1);}
-  </style>
+  }
+</style>
 
   <!-- ===== PROJECTS SECTION ===== -->
   <section id="projects" style="background:#fff;color:#111;">
-    <h2 style="color:#111;">Gallery Proyek</h2>
+    <h2 style="color:#111;">Gallery kegiatan proyek</h2>
     <div class="project-grid">
-      <img src="img/foto1.jpeg" alt="Project 1">
-      <img src="img/foto2.JPG" alt="Project 2">
-      <img src="img/foto5.jpg" alt="Project 3">
-      <img src="img/foto6.jpeg" alt="Project 4">
-      <img src="img/foto9.jpeg" alt="Project 5">
-      <img src="img/foto10.jpeg" alt="Project 6">
-      <img src="img/foto15.jpeg" alt="Project 7">
-      <img src="img/foto12.jpeg" alt="Project 8">
-      <img src="img/foto13.jpeg" alt="Project 9">
+      <img src="img/foto1.JPG" alt="Project 1">
+      <img src="img/foto2.jpeg" alt="Project 2">
+      <img src="img/foto3.jpg" alt="Project 3">
+      <img src="img/foto4.jpeg" alt="Project 4">
+      <img src="img/foto5.jpeg" alt="Project 5">
+      <img src="img/foto6.jpeg" alt="Project 6">
+      <img src="img/foto7.jpeg" alt="Project 7">
+      <img src="img/foto8.jpeg" alt="Project 8">
+      <img src="img/foto9.JPG" alt="Project 9">
     </div>
   </section>
 
+  <script>
+  // === Lightbox Gallery ===
+  const galleryImages = document.querySelectorAll(".project-grid img");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const closeBtn = document.getElementById("closeLightbox");
+
+  galleryImages.forEach(img => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightbox.classList.add("active");
+    });
+  });
+
+  closeBtn.addEventListener("click", () => {
+    lightbox.classList.remove("active");
+  });
+
+  // Tutup lightbox jika klik di luar gambar
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) lightbox.classList.remove("active");
+  });
+</script>
+
+  <!-- LIGHTBOX VIEWER -->
+<div class="lightbox" id="lightbox">
+  <span id="closeLightbox">&times;</span>
+  <img id="lightboxImg" src="" alt="preview">
+</div>
+
   <section id="Videos"section></section>
   <section id="tiktok-videos" style="padding:80px 20px; text-align:center;">
-  <h2 style="margin-bottom:40px;">Videos Proyek</h2>
+  <h2 style="margin-bottom:40px;">Video kegiatan proyek</h2>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:1000px;margin:auto;">
 
@@ -409,6 +959,39 @@
       </section>
     </blockquote>
 
+    <!-- Video TikTok 4 -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@pt.arief.arsitek/video/7540206129142451476"
+      data-video-id="7540206129142451476"
+      style="max-width: 100%;min-width: 250px;">
+      <section>
+        <a target="_blank" title="@pt.arief.arsitek" href="https://www.tiktok.com/@pt.arief.arsitek?refer=embed">@pt.arief.arsitek</a>
+        Dokumentasi video proyek lainnya oleh tim kami.
+      </section>
+    </blockquote>
+
+    <!-- Video TikTok 5 -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@pt.arief.arsitek/video/7538695242824846593"
+      data-video-id="7538695242824846593"
+      style="max-width: 100%;min-width: 250px;">
+      <section>
+        <a target="_blank" title="@pt.arief.arsitek" href="https://www.tiktok.com/@pt.arief.arsitek?refer=embed">@pt.arief.arsitek</a>
+        Dokumentasi video proyek lainnya oleh tim kami.
+      </section>
+    </blockquote>
+
+    <!-- Video TikTok 6 -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@pt.arief.arsitek/video/7527605870608403733"
+      data-video-id="7527605870608403733"
+      style="max-width: 100%;min-width: 250px;">
+      <section>
+        <a target="_blank" title="@pt.arief.arsitek" href="https://www.tiktok.com/@pt.arief.arsitek?refer=embed">@pt.arief.arsitek</a>
+        Dokumentasi video proyek lainnya oleh tim kami.
+      </section>
+    </blockquote>
+
   </div>
 </section>
 
@@ -434,22 +1017,28 @@
   <div style="position:absolute;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);z-index:1;"></div>
 
   <div style="position:relative;z-index:2;">
-    <h2 style="color:#ffffff; text-shadow:0 0 20px rgb(0, 0, 0);"></span>>Contact Us</h2>
+    <h2 style="color:#ffffff; text-shadow:0 0 20px rgb(0, 0, 0);">Hubungi kami</h2>
 
     <form style="max-width:600px;margin:40px auto 0;background:#222;padding:30px;border-radius:10px;">
       <div style="text-align:center;max-width:800px;margin:auto;">
-        <p><i class="fa-solid fa-location-dot" style="color:#d6a827;"></i> Jl. Monginsidi No.6, Rampal Celaket, Kec. Klojen, Kota Malang, Jawa Timur 65111 </p>
-        <p><i class="fa-solid fa-phone" style="color:#d6a827;"></i> +62 899 9600 111 / +62 233 778 1234</p>
-        <p><i class="fa-solid fa-envelope" style="color:#d6a827;"></i> <i>pt.arief.arsitek@gmail.com</i></p>
-      </div>
-    </form>
 
-    <form style="max-width:600px;margin:40px auto 0;background:#222;padding:30px;border-radius:10px;">
-      <input type="text" placeholder="Nama" required style="width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:5px;">
-      <input type="email" placeholder="Email" required style="width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:5px;">
-      <textarea rows="5" placeholder="Pesan Anda..." required style="width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:5px;"></textarea>
-      <button type="submit" style="width:100%;padding:12px;background:#d6a827;color:#fff;font-weight:600;border:none;border-radius:5px;cursor:pointer;">Kirim Pesan</button>
-    </form>
+    <p>
+  <i class="fa-solid fa-phone" style="color:#d6a827;"></i>
+  <a href="https://wa.me/628999600111" target="_blank" class="glow-link">+62 899 9600 111</a> /
+  <a href="https://wa.me/622337781234" target="_blank" class="glow-link">+62 233 778 1234</a>
+</p>
+
+<p>
+  <i class="fa-solid fa-envelope" style="color:#d6a827;"></i>
+  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pt.arief.arsitek@gmail.com"
+     target="_blank"
+     class="glow-link">
+    pt.arief.arsitek@gmail.com
+  </a>
+</p>
+
+  </div>
+</form>
 
     <div style="max-width:700px;margin:40px auto;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
       <iframe src="https://www.google.com/maps?q=-7.964746,112.633676&hl=id&z=18&output=embed"
@@ -458,6 +1047,178 @@
     </div>
   </div>
 </section>
+
+<!-- ===== BLOK INFO SEBELUM FOOTER DENGAN ANIMASI ===== -->
+<section id="info-blocks">
+  <div class="info-container">
+
+    <!-- Kolom 1 -->
+    <div class="info-column">
+      <h3 class="title-orange">Construction Blocks</h3>
+      <p>PT ARIEF ARSITEK adalah perusahaan arsitektur dan konstruksi yang berkomitmen memberikan solusi desain terbaik dan profesional.</p>
+      <p>Kami berfokus pada inovasi, efisiensi, dan hasil berkualitas tinggi dalam setiap proyek yang kami tangani.</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/share/1BG9rqZD43/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/pt.arief.arsitek?igsh=dGhsaXNtYmJjNjk3" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/6282337781234" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://youtube.com/@ariefarsitek?si=HdWDpIA93sRJkGrI" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.tiktok.com/@pt.arief.arsitek?_t=ZS-90S4jRglsLU&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+
+    <!-- Kolom 2 -->
+    <div class="info-column">
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#services">Our Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Kolom 3 -->
+    <div class="info-column">
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="#Videos">Our Videos</a></li>
+        <li><a href="#business">Our Partners</a></li>
+        <li><a href="#projects">Portfolio</a></li>
+        <li><a href="#contact">Get In Touch</a></li>
+      </ul>
+    </div>
+
+    <!-- Kolom 4 -->
+    <div class="info-column">
+      <h4>Contact Us</h4>
+      <p><i class="fa-solid fa-phone"></i> +62 899 9600 111 / +62 233 778 1234</p>
+      <p><i class="fa-solid fa-envelope"></i> pt.arief.arsitek@gmail.com</p>
+      <p><i class="fa-solid fa-location-dot"></i> 
+        <a href="https://maps.google.com/?q=-7.964746,112.633676" target="_blank">Jl. Monginsidi No.6, Rampal Celaket, Kota Malang</a>
+      </p>
+      <p><i class="fa-solid fa-clock"></i> Senin-Jum'at: 08:00–16:00 WIB</p>
+      <p><i class="fa-solid fa-clock"></i> Sabtu: 08:00–14:00 WIB</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ===== BLOK INFO STYLE ===== */
+#info-blocks {
+  background: #212224;
+  color: #bbb;
+  padding: 80px 30px;
+}
+
+.info-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.info-column {
+  flex: 1 1 250px;
+  min-width: 250px;
+}
+
+/* Judul oranye */
+.title-orange {
+  color: #d6a827;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.info-column h4 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.info-column h4::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #d6a827;
+  margin-top: 6px;
+}
+
+/* Paragraf */
+.info-column p {
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* Link animasi glow underline */
+.info-column a {
+  color: #bbb;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.info-column a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: #d6a827;
+  box-shadow: 0 0 10px #d6a827;
+  transition: width 0.4s ease, box-shadow 0.3s ease;
+}
+
+.info-column a:hover {
+  color: #fff;
+}
+
+.info-column a:hover::after {
+  width: 100%;
+  box-shadow: 0 0 12px #ffce45;
+}
+
+/* Social icons */
+.social-icons {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  background: #d6a827;
+  color: #000;
+  box-shadow: 0 0 10px #d6a827;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .info-container {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 40px;
+  }
+}
+</style>
 
   <!-- ===== FOOTER ===== -->
   <footer style="background:#000;color:#ccc;text-align:center;padding:25px 15px;font-size:0.95rem;">
@@ -503,5 +1264,17 @@
       observer.observe(sec);
     });
   </script>
+
+  <script>
+  // Menonaktifkan scroll selama intro tampil
+  document.body.style.overflow = "hidden";
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("intro").style.display = "none";
+      document.body.style.overflow = "auto";
+    }, 4000); // waktu total animasi 4 detik
+  });
+</script>
+
 </body>
 </html>
